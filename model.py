@@ -7,8 +7,6 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, B
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 Base = declarative_base()
-
-
 @lru_cache(maxsize=32)
 def get_engine(host, user, password, database):
     """Return a cached SQLAlchemy engine for a given database configuration."""
@@ -21,11 +19,11 @@ def get_engine(host, user, password, database):
         max_overflow=10,
     )
 
-
 @lru_cache(maxsize=32)
 def get_session_factory(host, user, password, database):
     """Return a cached session factory using a shared engine for the database."""
     engine = get_engine(host, user, password, database)
+    Base.metadata.create_all(engine)  # Ensure tables are created
     return sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 
@@ -96,6 +94,8 @@ class OfftakePoint(Base):
             'ConsumptionGroups': self.consumption_groups_data,
         }
 
+    # syncing existing database rows
+    # patching/refreshing previously saved records
     def update_from_payload(self, payload):
         valid_from = payload.get('ValidFrom')
         if isinstance(valid_from, str):
@@ -126,6 +126,8 @@ class OfftakePoint(Base):
             self.consumption_groups_data = payload.get('ConsumptionGroups', self.consumption_groups_data)
         return self
 
+    # for new inserts
+    # object creation from an API response payload
     @classmethod
     def from_payload_dict(cls, payload):
         instance = cls(

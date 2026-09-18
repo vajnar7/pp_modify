@@ -7,6 +7,8 @@ from urllib3 import PoolManager
 from enum import Enum
 from requests import Session
 
+from model import OfftakePoint, get_session
+
 # To dobimo iz plinovodov konfiguracijo odjemnega mesta. Mi bomo morali to spremeniti in poslati nazaj.
 sample_payload =  {
       'IsActive': True,
@@ -146,7 +148,20 @@ if __name__ == "__main__":
     session = PPSession(f'{baseUrl}/v1/PpWs/GetOfftakePointsConfigurationEis', cert_path)
     res = session.read_configuration()
     session.close()
-    print(res)
+
+    session = get_session(
+        host='localhost',
+        user='vajnar',
+        password='AldebaraN7#',
+        database='pp_offtake'
+    )
+    res = [p for p in res.get("OfftakePoints", []) if p.get("CityGateCode") in [CityGate.ELB.value, CityGate.ZIR.value]]
+    for payload in res:
+        point = OfftakePoint.from_payload_dict(payload)
+        print(f"Adding OfftakePoint: {point.offtake_point_code} - {point.name}")
+        session.add(point)
+        session.commit()
+    session.close()
 
     # session = PPSession(f'{baseUrl}/v1/PpWs/AddOfftakePointsEis', cert_path)
     # res = session.add_configuration(sample_payload)

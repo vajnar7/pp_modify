@@ -114,6 +114,13 @@ class PPSession(Session):
         #     if allocation.get("CityGateCode") == citygate.value
         # ]
 
+    def add_configuration(self, payload):
+        payload = {"OffTakePoints": [payload]}
+        response = self.post(self.url, json=payload, headers=headers, cert=self.cert_path)
+        if response.status_code != 200:
+            raise Exception(f"Request failed with status code {response.status_code}: {response.text}")
+        return response.json()
+
          
 
 
@@ -140,3 +147,8 @@ if __name__ == "__main__":
     res = session.read_configuration()
     session.close()
     print(res)
+
+    # session = PPSession(f'{baseUrl}/v1/PpWs/AddOfftakePointsEis', cert_path)
+    # res = session.add_configuration(sample_payload)
+    # session.close()
+    # print(res)

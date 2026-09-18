@@ -1,0 +1,3898 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "PP  Api",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "/PpApi"
+    }
+  ],
+  "paths": {
+    "/v{version}/OfftakePoints": {
+      "get": {
+        "tags": [
+          "OfftakePoints"
+        ],
+        "summary": "Konfiguracija odjemnih mest",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "API version",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1.0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "OfftakePoints"
+        ],
+        "summary": "Sprememba podatkov odjemnih mest",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "API version",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1.0"
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OfftakePoint"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "OfftakePoints"
+        ],
+        "summary": "Dodajanje odjemnih mest",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "API version",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1.0"
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OfftakePoint"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetHeatingSeasons": {
+      "get": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetHeatingSeasons",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetHeatingSeasonsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetHeatingSeasonsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetHeatingSeasonsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetCalculationTimes": {
+      "get": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetCalculationTimes",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCalculationTimesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCalculationTimesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCalculationTimesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/ChangeHeatingSeasons": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "ChangeHeatingSeasons",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeHeatingSeasonsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeHeatingSeasonsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeHeatingSeasonsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeHeatingSeasonsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeHeatingSeasonsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeHeatingSeasonsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeHeatingSeasonsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/AddCityGatesAllocationDistribution": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "AddCityGatesAllocationDistribution",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesAllocationDistributionRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesAllocationDistributionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesAllocationDistributionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesAllocationDistributionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCityGatesAllocationDistributionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCityGatesAllocationDistributionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCityGatesAllocationDistributionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/AddCityGatesForecastDistribution": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "AddCityGatesForecastDistribution",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesForecastDistributionRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesForecastDistributionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesForecastDistributionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesForecastDistributionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCityGatesForecastDistributionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCityGatesForecastDistributionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCityGatesForecastDistributionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/AddMeasurementsMismatches": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "AddMeasurementsMismatches",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMeasurementsMismatchesRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMeasurementsMismatchesRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMeasurementsMismatchesRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMeasurementsMismatchesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddMeasurementsMismatchesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddMeasurementsMismatchesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddMeasurementsMismatchesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/AddCityGatesQuantities": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "AddCityGatesQuantities",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesQuantitiesRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesQuantitiesRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesQuantitiesRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCityGatesQuantitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCityGatesQuantitiesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCityGatesQuantitiesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCityGatesQuantitiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/AddOfftakePointsEis": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "AddOfftakePointsEis",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsEisRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsEisRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsEisRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsEisRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOfftakePointsEisResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOfftakePointsEisResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOfftakePointsEisResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetOfftakePointsConfigurationEis": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetOfftakePointsConfigurationEis",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsConfigurationEisRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsConfigurationEisRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsConfigurationEisRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsConfigurationEisRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsConfigurationEisResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsConfigurationEisResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsConfigurationEisResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/AddOfftakePointsMeasurments": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "AddOfftakePointsMeasurements",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsMeasurementsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsMeasurementsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsMeasurementsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsMeasurementsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOfftakePointsMeasurementsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOfftakePointsMeasurementsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOfftakePointsMeasurementsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/AddOfftakePointsReadings": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "AddOfftakePointsReadings",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsReadingsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsReadingsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsReadingsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOfftakePointsReadingsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOfftakePointsReadingsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOfftakePointsReadingsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOfftakePointsReadingsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/AdjustOfftakePointsMeasurements": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "AdjustOfftakePointsMeasurements",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdjustOfftakePointsMeasurementsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdjustOfftakePointsMeasurementsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdjustOfftakePointsMeasurementsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdjustOfftakePointsMeasurementsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdjustOfftakePointsMeasurementsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdjustOfftakePointsMeasurementsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdjustOfftakePointsMeasurementsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/AnnulOfftakePointsReadings": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "AnnulOfftakePointsReadings",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnulOfftakePointsReadingsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnulOfftakePointsReadingsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnulOfftakePointsReadingsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnulOfftakePointsReadingsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnulOfftakePointsReadingsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnulOfftakePointsReadingsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnulOfftakePointsReadingsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/ChangeOfftakePointsSupplier": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "ChangeOfftakePointsSupplier",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeOfftakePointsSupplierRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeOfftakePointsSupplierRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeOfftakePointsSupplierRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeOfftakePointsSupplierRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeOfftakePointsSupplierResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeOfftakePointsSupplierResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeOfftakePointsSupplierResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetCityGateAllocations": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetCityGateAllocations",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGateAllocationsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGateAllocationsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGateAllocationsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGateAllocationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGateAllocationsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGateAllocationsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGateAllocationsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetCityGateForecasts": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetCityGateForecasts",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGateForecastsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGateForecastsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGateForecastsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGateForecastsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGateForecastsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGateForecastsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGateForecastsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetCityGatesBalance": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetCityGatesBalance",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGatesBalanceRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGatesBalanceRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGatesBalanceRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGatesBalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGatesBalanceResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGatesBalanceResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGatesBalanceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetCityGatesQuantities": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetCityGatesQuantities",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGatesQuantitiesRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGatesQuantitiesRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGatesQuantitiesRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCityGatesQuantitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGatesQuantitiesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGatesQuantitiesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCityGatesQuantitiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetMeasuredOfftakeHourlyMismatches": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetMeasuredOfftakeHourlyMismatches",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetMeasuredOfftakeHourlyMismatchesRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetMeasuredOfftakeHourlyMismatchesRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetMeasuredOfftakeHourlyMismatchesRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetMeasuredOfftakeHourlyMismatchesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMeasuredOfftakeHourlyMismatchesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMeasuredOfftakeHourlyMismatchesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMeasuredOfftakeHourlyMismatchesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetOfftakePoints": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetOfftakePoints",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetOfftakePointsAllocationsMonthly": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetOfftakePointsAllocationsMonthly",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsAllocationsMonthlyRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsAllocationsMonthlyRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsAllocationsMonthlyRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsAllocationsMonthlyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsAllocationsMonthlyResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsAllocationsMonthlyResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsAllocationsMonthlyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetOfftakePointsAllocations": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetOfftakePointsAllocations",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsAllocationsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsAllocationsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsAllocationsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsAllocationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsAllocationsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsAllocationsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsAllocationsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetOfftakePointsMeasurements": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetOfftakePointsMeasurements",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsMeasurementsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsMeasurementsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsMeasurementsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsMeasurementsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsMeasurementsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsMeasurementsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsMeasurementsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetOfftakePointsReadings": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetOfftakePointsReadings",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsReadingsRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsReadingsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsReadingsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOfftakePointsReadingsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsReadingsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsReadingsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOfftakePointsReadingsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/GetTemperatures": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "GetTemperatures",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTemperaturesRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTemperaturesRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTemperaturesRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTemperaturesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTemperaturesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTemperaturesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTemperaturesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v{version}/PpWs/ModifyOfftakePointsEis": {
+      "post": {
+        "tags": [
+          "PpWs"
+        ],
+        "summary": "ModifyOfftakePointsEis",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModifyOfftakePointsEisRequest"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModifyOfftakePointsEisRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModifyOfftakePointsEisRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModifyOfftakePointsEisRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModifyOfftakePointsEisResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModifyOfftakePointsEisResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModifyOfftakePointsEisResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddCityGateAllocationDistribution": {
+        "type": "object",
+        "properties": {
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "suppliers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddCityGateAllocationDistributionSupplier"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGateAllocationDistributionSupplier": {
+        "type": "object",
+        "properties": {
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddCityGateAllocationDistributionSupplierQuantity"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGateAllocationDistributionSupplierQuantity": {
+        "type": "object",
+        "properties": {
+          "gasDay": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGateForecastDistribution": {
+        "type": "object",
+        "properties": {
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "suppliers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddCityGateForecastDistributionSupplier"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGateForecastDistributionSupplier": {
+        "type": "object",
+        "properties": {
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddCityGateForecastDistributionSupplierQuantity"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGateForecastDistributionSupplierQuantity": {
+        "type": "object",
+        "properties": {
+          "hour": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGateQuantities": {
+        "type": "object",
+        "properties": {
+          "hour": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGateQuantitiesCityGates": {
+        "type": "object",
+        "properties": {
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddCityGateQuantities"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGatesAllocationDistributionRequest": {
+        "type": "object",
+        "properties": {
+          "cityGates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddCityGateAllocationDistribution"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGatesAllocationDistributionResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGatesForecastDistributionOptions": {
+        "enum": [
+          "None",
+          "CalculateHourlyValuesFromAggregates"
+        ],
+        "type": "string"
+      },
+      "AddCityGatesForecastDistributionRequest": {
+        "type": "object",
+        "properties": {
+          "cityGates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddCityGateForecastDistribution"
+            },
+            "nullable": true
+          },
+          "options": {
+            "$ref": "#/components/schemas/AddCityGatesForecastDistributionOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGatesForecastDistributionResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGatesQuantitiesRequest": {
+        "type": "object",
+        "properties": {
+          "cityGates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddCityGateQuantitiesCityGates"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCityGatesQuantitiesResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddMeasurementMismatches": {
+        "type": "object",
+        "properties": {
+          "cityGateGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "gasDay": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "agreedMismatches": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddMeasurementsMismatchesRequest": {
+        "type": "object",
+        "properties": {
+          "measurementsMismatches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddMeasurementMismatches"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddMeasurementsMismatchesResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointEis": {
+        "required": [
+          "cityGateCode",
+          "offtakePointCode",
+          "supplierCode"
+        ],
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/OfftakePointStatus"
+          },
+          "loadType": {
+            "$ref": "#/components/schemas/LoadType"
+          },
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "measurementDeviceMultiplier": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "yearlyOfftake": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isProtectedConsumer": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "offtakeKind": {
+            "$ref": "#/components/schemas/OfftakeKindType"
+          },
+          "interruptibleSupplyContract": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "alternativeEnergySource": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "protectedUserConsumePart": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currentOfftakePointStatus": {
+            "$ref": "#/components/schemas/CurrentOfftakePointStatusType"
+          },
+          "gs1": {
+            "type": "string",
+            "nullable": true
+          },
+          "cdk": {
+            "$ref": "#/components/schemas/CdkType"
+          },
+          "consumptionGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsumptionGroupParameters"
+            },
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointMeasurement": {
+        "type": "object",
+        "properties": {
+          "readingTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "readingValue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nm3ConversionFactor": {
+            "type": "number",
+            "format": "double"
+          },
+          "newReadingValue": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "newNm3ConversionFactor": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointMeasurements": {
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "measurements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddOfftakePointMeasurement"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointReading": {
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "readingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "readingValue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nm3ConversionFactor": {
+            "type": "number",
+            "format": "double"
+          },
+          "newReadingValue": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "newNm3ConversionFactor": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointsEisRequest": {
+        "type": "object",
+        "properties": {
+          "offtakePoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddOfftakePointEis"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointsEisResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointsMeasurementsRequest": {
+        "type": "object",
+        "properties": {
+          "offtakePoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddOfftakePointMeasurements"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointsMeasurementsResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointsReadingsOptions": {
+        "enum": [
+          "None",
+          "SkipOutOfBoundsCheck"
+        ],
+        "type": "string"
+      },
+      "AddOfftakePointsReadingsRequest": {
+        "type": "object",
+        "properties": {
+          "readings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddOfftakePointReading"
+            },
+            "nullable": true
+          },
+          "options": {
+            "$ref": "#/components/schemas/AddOfftakePointsReadingsOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddOfftakePointsReadingsResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdjustOfftakePointMeasurements": {
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "amountInNm3": {
+            "type": "number",
+            "format": "double"
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "entryDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdjustOfftakePointsMeasurementsRequest": {
+        "type": "object",
+        "properties": {
+          "adjustments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdjustOfftakePointMeasurements"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdjustOfftakePointsMeasurementsResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AllocationMonthlyQueryOptions": {
+        "enum": [
+          "None",
+          "IncludeNotDailyMeasured",
+          "IncludeDailyMeasured",
+          "Default"
+        ],
+        "type": "string"
+      },
+      "AllocationQueryOptions": {
+        "enum": [
+          "None",
+          "IncludeNotDailyMeasured",
+          "IncludeDailyMeasured",
+          "Default",
+          "IncludeNotDailyMeasuredForecastsOnly"
+        ],
+        "type": "string"
+      },
+      "AnnulOfftakePointsReadingsRequest": {
+        "type": "object",
+        "properties": {
+          "annulments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnnullOfftakePointReading"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AnnulOfftakePointsReadingsResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AnnullOfftakePointReading": {
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "readingDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CdkType": {
+        "enum": [
+          "Cdk1",
+          "Cdk2",
+          "Cdk3",
+          "Cdk4",
+          "Cdk5",
+          "Cdk6",
+          "Cdk7",
+          "Cdk8",
+          "Cdk9",
+          "Cdk10",
+          "Cdk11",
+          "Cdk12",
+          "Cdk13",
+          "Cdk14",
+          "Cdk15"
+        ],
+        "type": "string"
+      },
+      "ChangeHeatingSeasons": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "cityGateGroupCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangeHeatingSeasonsRequest": {
+        "type": "object",
+        "properties": {
+          "heatingSeasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangeHeatingSeasons"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangeHeatingSeasonsResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangeOfftakePointSupplier": {
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangeOfftakePointsSupplierRequest": {
+        "type": "object",
+        "properties": {
+          "offtakePoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangeOfftakePointSupplier"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChangeOfftakePointsSupplierResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsumptionGroupParameters": {
+        "type": "object",
+        "properties": {
+          "groupPart": {
+            "type": "number",
+            "format": "double"
+          },
+          "subGroup1": {
+            "type": "number",
+            "format": "double"
+          },
+          "subGroup2": {
+            "type": "number",
+            "format": "double"
+          },
+          "subGroup3": {
+            "type": "number",
+            "format": "double"
+          },
+          "subGroup4": {
+            "type": "number",
+            "format": "double"
+          },
+          "subGroup5": {
+            "type": "number",
+            "format": "double"
+          },
+          "subGroup6": {
+            "type": "number",
+            "format": "double"
+          },
+          "consumptionGroup": {
+            "$ref": "#/components/schemas/ConsumptionGroupType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConsumptionGroupType": {
+        "enum": [
+          "None",
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "I",
+          "J",
+          "K",
+          "L",
+          "M",
+          "N"
+        ],
+        "type": "string"
+      },
+      "CurrentOfftakePointStatusType": {
+        "enum": [
+          "None",
+          "CallUnconfirmed",
+          "CallConfirmed",
+          "Disconnected"
+        ],
+        "type": "string"
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponseOfftakePoint": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "errorCode": {
+            "$ref": "#/components/schemas/ErrorResponseOfftakePointCodes"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ErrorResponseOfftakePointCodes": {
+        "enum": [
+          "DataForClosePeriod",
+          "NoCityGatesForDso",
+          "CityGateNotExists",
+          "NoOfftakePointsForDso",
+          "NotValidSupplierCode",
+          "SupplierIsNotPresentOnCityGate",
+          "OfftakePointExists",
+          "OfftakePointNotExists",
+          "MultipleEntryForConsumptionGroup",
+          "ConsumptionGroupsSumIsNot100",
+          "ConsumptionSubGroupsSumIsGreaterThan100",
+          "MultipleDataForOfftakePoint",
+          "UnknownOfftakeKind",
+          "ParseErrorRows",
+          "AllParametersAreRequired",
+          "TaskExecutionError",
+          "WrongValidityDate",
+          "ProtectedConsumerWithConsumptionGroups",
+          "ProtectedConsumerMustHave100",
+          "NoOfftakePointsForSupplier",
+          "OfftakeNotMatch",
+          "NotValidOdsCode",
+          "NotValidRegulatoryMark",
+          "NoChange",
+          "WrongGs1",
+          "AnnulNotPossible",
+          "EisUnavailable"
+        ],
+        "type": "string"
+      },
+      "ForecastRegion": {
+        "enum": [
+          "OsrednjaSlovenija",
+          "Stajerska",
+          "Gorenjska",
+          "Primorska",
+          "Koroska",
+          "Dolenjska"
+        ],
+        "type": "string"
+      },
+      "GetCalculationTimes": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "nullable": true
+          },
+          "calculationStartAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "calculationFinishedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cityGateName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCalculationTimesResponse": {
+        "type": "object",
+        "properties": {
+          "calculationTimes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCalculationTimes"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateAllocation": {
+        "type": "object",
+        "properties": {
+          "gasDay": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "dailyMeasuredQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "notDailyMeasuredQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          },
+          "additionalQuantity": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateAllocationsQuery": {
+        "type": "object",
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dsoCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateAllocationsRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetCityGateAllocationsQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateAllocationsResponse": {
+        "type": "object",
+        "properties": {
+          "allocations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCityGateAllocation"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateBalance": {
+        "type": "object",
+        "properties": {
+          "gasDay": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "cityGateGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "dailyMeasuredQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "notDailyMeasuredQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "measurementsMismatch": {
+            "type": "number",
+            "format": "double"
+          },
+          "cityGateQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          },
+          "additionalQuantity": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateBalanceQuery": {
+        "type": "object",
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dsoCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateForecast": {
+        "type": "object",
+        "properties": {
+          "hour": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "cityGateGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "dailyMeasuredQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "notDailyMeasuredQuantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateForecastsQuery": {
+        "type": "object",
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dsoCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateForecastsRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetCityGateForecastsQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateForecastsResponse": {
+        "type": "object",
+        "properties": {
+          "forecasts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCityGateForecast"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGateQuantities": {
+        "type": "object",
+        "properties": {
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "hour": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGatesBalanceRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetCityGateBalanceQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGatesBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "cityGatesBalance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCityGateBalance"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGatesQuantitiesQuery": {
+        "type": "object",
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dsoCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGatesQuantitiesRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetCityGatesQuantitiesQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetCityGatesQuantitiesResponse": {
+        "type": "object",
+        "properties": {
+          "cityGatesQuantities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetCityGateQuantities"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetHeatingSeasons": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "cityGateGroupCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetHeatingSeasonsResponse": {
+        "type": "object",
+        "properties": {
+          "heatingSeasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetHeatingSeasons"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMeasuredOfftakeHourlyMismatches": {
+        "type": "object",
+        "properties": {
+          "cityGateGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "hour": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "quantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMeasuredOfftakeHourlyMismatchesQuery": {
+        "type": "object",
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dsoCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMeasuredOfftakeHourlyMismatchesRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetMeasuredOfftakeHourlyMismatchesQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMeasuredOfftakeHourlyMismatchesResponse": {
+        "type": "object",
+        "properties": {
+          "measuredOfftakeHourlyMismatches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetMeasuredOfftakeHourlyMismatches"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePoint": {
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/OfftakePointStatus"
+          },
+          "loadType": {
+            "$ref": "#/components/schemas/LoadType"
+          },
+          "measurementDeviceMultiplier": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "yearlyOfftake": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointAllocation": {
+        "type": "object",
+        "properties": {
+          "gasDay": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointAllocationMonthly": {
+        "type": "object",
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "number",
+            "format": "double"
+          },
+          "unit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointMeasurement": {
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "readingTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "entryTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "readingValue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "conversionFactor": {
+            "type": "number",
+            "format": "double"
+          },
+          "conversionUnit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          },
+          "readingDeviceChanged": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointReading": {
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "readingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "entryDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "readingValue": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "conversionFactor": {
+            "type": "number",
+            "format": "double"
+          },
+          "conversionUnit": {
+            "$ref": "#/components/schemas/QuantityUnit"
+          },
+          "readingDeviceChanged": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsAllocationsMonthlyQuery": {
+        "type": "object",
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "options": {
+            "$ref": "#/components/schemas/AllocationMonthlyQueryOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsAllocationsMonthlyRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetOfftakePointsAllocationsMonthlyQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsAllocationsMonthlyResponse": {
+        "type": "object",
+        "properties": {
+          "allocations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetOfftakePointAllocationMonthly"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsAllocationsQuery": {
+        "type": "object",
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "options": {
+            "$ref": "#/components/schemas/AllocationQueryOptions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsAllocationsRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetOfftakePointsAllocationsQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsAllocationsResponse": {
+        "type": "object",
+        "properties": {
+          "allocations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetOfftakePointAllocation"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsConfigurationEisRequest": {
+        "type": "object",
+        "properties": {
+          "all": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsConfigurationEisResponse": {
+        "type": "object",
+        "properties": {
+          "offtakePoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddOfftakePointEis"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsMeasurementsQuery": {
+        "type": "object",
+        "properties": {
+          "readingTimeFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "readingTimeTo": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsMeasurementsRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetOfftakePointsMeasurementsQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsMeasurementsResponse": {
+        "type": "object",
+        "properties": {
+          "measurements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetOfftakePointMeasurement"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsQuery": {
+        "type": "object",
+        "properties": {
+          "cityGateCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "offtakePointsCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "dsoCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsReadingsQuery": {
+        "type": "object",
+        "properties": {
+          "readingDateFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "readingDateTo": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsReadingsRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetOfftakePointsReadingsQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsReadingsResponse": {
+        "type": "object",
+        "properties": {
+          "readings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetOfftakePointReading"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetOfftakePointsQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetOfftakePointsResponse": {
+        "type": "object",
+        "properties": {
+          "offtakePoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetTemperature": {
+        "type": "object",
+        "properties": {
+          "gasDay": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "region": {
+            "$ref": "#/components/schemas/ForecastRegion"
+          },
+          "forecastedMinTemperature": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "forecastedMaxTemperature": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "forecastedAverageTemperature": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "forecastsModifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "measuredTemperature07": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "measuredTemperature14": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "measuredTemperature21": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "measuredAverageTemperature": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "measurementsModifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "weightedTemperature": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "weightedTemperatureCalculatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetTemperaturesQuery": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "regions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ForecastRegion"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetTemperaturesRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "$ref": "#/components/schemas/GetTemperaturesQuery"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetTemperaturesResponse": {
+        "type": "object",
+        "properties": {
+          "temperatures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetTemperature"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoadType": {
+        "enum": [
+          "Cooking",
+          "HotWater",
+          "HeatingSingleHome",
+          "HeatingAppartmentBlock",
+          "Commercial",
+          "Technical",
+          "HeatingWithoutCookingAndHotWater",
+          "Unknown"
+        ],
+        "type": "string"
+      },
+      "ModifyOfftakePointEis": {
+        "required": [
+          "cityGateCode",
+          "offtakePointCode",
+          "supplierCode"
+        ],
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/OfftakePointStatus"
+          },
+          "loadType": {
+            "$ref": "#/components/schemas/LoadType"
+          },
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "measurementDeviceMultiplier": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "yearlyOfftake": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isProtectedConsumer": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "offtakeKind": {
+            "$ref": "#/components/schemas/OfftakeKindType"
+          },
+          "interruptibleSupplyContract": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "alternativeEnergySource": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "protectedUserConsumePart": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currentOfftakePointStatus": {
+            "$ref": "#/components/schemas/CurrentOfftakePointStatusType"
+          },
+          "gs1": {
+            "type": "string",
+            "nullable": true
+          },
+          "cdk": {
+            "$ref": "#/components/schemas/CdkType"
+          },
+          "consumptionGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsumptionGroupParameters"
+            },
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModifyOfftakePointsEisRequest": {
+        "type": "object",
+        "properties": {
+          "offtakePoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModifyOfftakePointEis"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ModifyOfftakePointsEisResponse": {
+        "required": [
+          "errors",
+          "errorsEis"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorMessage"
+            },
+            "nullable": true
+          },
+          "errorsEis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorResponseOfftakePoint"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfftakeKindType": {
+        "enum": [
+          "None",
+          "HouseholdIndividual",
+          "HouseholdCommon",
+          "SocialServiceType3",
+          "SocialServiceType4",
+          "SocialServiceType5",
+          "SocialServiceType6",
+          "SocialServiceType7",
+          "KindergartenSchool",
+          "HeatDistribution",
+          "BusinessConsumption",
+          "IndustryConsumption",
+          "PowerPlant"
+        ],
+        "type": "string"
+      },
+      "OfftakePoint": {
+        "required": [
+          "cityGateCode",
+          "offtakePointCode",
+          "supplierCode"
+        ],
+        "type": "object",
+        "properties": {
+          "offtakePointCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "cityGateCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/OfftakePointStatus"
+          },
+          "loadType": {
+            "$ref": "#/components/schemas/LoadType"
+          },
+          "supplierCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "measurementDeviceMultiplier": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "yearlyOfftake": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isProtectedConsumer": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "offtakeKind": {
+            "$ref": "#/components/schemas/OfftakeKindType"
+          },
+          "interruptibleSupplyContract": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "alternativeEnergySource": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "protectedUserConsumePart": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currentOfftakePointStatus": {
+            "$ref": "#/components/schemas/CurrentOfftakePointStatusType"
+          },
+          "gs1": {
+            "type": "string",
+            "nullable": true
+          },
+          "cdk": {
+            "$ref": "#/components/schemas/CdkType"
+          },
+          "consumptionGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsumptionGroupParameters"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfftakePointStatus": {
+        "enum": [
+          "NoOfftake",
+          "NotDailyMeasured",
+          "DailyMeasured"
+        ],
+        "type": "string"
+      },
+      "QuantityUnit": {
+        "enum": [
+          "Nm3"
+        ],
+        "type": "string"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKey": [ ]
+    }
+  ]
+}

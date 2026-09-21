@@ -1,4 +1,5 @@
 import configparser
+import json
 from datetime import datetime, timedelta
 
 import ssl
@@ -7,7 +8,20 @@ from urllib3 import PoolManager
 from enum import Enum
 from requests import Session
 
-from model import OfftakePoint, get_session
+import sys
+from PySide6.QtWidgets import (
+    QApplication,
+    QFormLayout,
+    QLabel,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QScrollArea,
+    QSplitter,
+    QVBoxLayout,
+    QWidget,
+)
+from PySide6.QtCore import Qt
 
 # To dobimo iz plinovodov konfiguracijo odjemnega mesta. Mi bomo morali to spremeniti in poslati nazaj.
 sample_payload =  {
@@ -50,6 +64,86 @@ headers = {
         "Connection": "keep-alive",
         "User-Agent": "PostmanRuntime/7.44.1"
     }
+
+class MainWindow(QMainWindow):
+    def __init__(self, offtake_points):
+        super().__init__()
+
+        self.setWindowTitle("Offtake Point Configuration")
+        self.setGeometry(100, 100, 1100, 700)
+        self.offtake_points = offtake_points
+
+        self.point_list = QListWidget()
+        self.point_list.setMinimumWidth(280)
+        self.point_list.currentItemChanged.connect(self.show_point)
+
+        list_panel = QWidget()
+        list_layout = QVBoxLayout(list_panel)
+        list_layout.addWidget(QLabel("Offtake points"))
+        list_layout.addWidget(self.point_list)
+
+        self.selected_point_label = QLabel("Select an offtake point")
+        self.selected_point_label.setStyleSheet("font-size: 16px; font-weight: bold;")
+
+        self.parameters_form = QFormLayout()
+        self.parameters_form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
+        parameters_widget = QWidget()
+        parameters_widget.setLayout(self.parameters_form)
+
+        parameters_scroll = QScrollArea()
+        parameters_scroll.setWidgetResizable(True)
+        parameters_scroll.setWidget(parameters_widget)
+
+        details_panel = QWidget()
+        details_layout = QVBoxLayout(details_panel)
+        details_layout.addWidget(self.selected_point_label)
+        details_layout.addWidget(parameters_scroll)
+
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+        splitter.addWidget(list_panel)
+        splitter.addWidget(details_panel)
+        splitter.setStretchFactor(1, 1)
+
+        container = QWidget()
+        container_layout = QVBoxLayout(container)
+        container_layout.addWidget(splitter)
+        self.setCentralWidget(container)
+
+        for point in self.offtake_points:
+            code = point.get("OfftakePointCode") or point.get("Name") or "Unknown"
+            item = QListWidgetItem(str(code))
+            item.setData(Qt.ItemDataRole.UserRole, point)
+            self.point_list.addItem(item)
+
+        if self.point_list.count():
+            self.point_list.setCurrentRow(0)
+        else:
+            self.selected_point_label.setText("No offtake points found")
+
+    def show_point(self, current, previous):
+        del previous
+        if current is None:
+            return
+
+        point = current.data(Qt.ItemDataRole.UserRole)
+        code = point.get("OfftakePointCode") or point.get("Name") or "Unknown"
+        self.selected_point_label.setText(f"Parameters: {code}")
+
+        while self.parameters_form.rowCount():
+            self.parameters_form.removeRow(0)
+
+        for parameter, value in point.items():
+            if isinstance(value, (dict, list)):
+                value = json.dumps(value, indent=2, ensure_ascii=False)
+            elif value is None:
+                value = ""
+            else:
+                value = str(value)
+
+            value_label = QLabel(value)
+            value_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            value_label.setWordWrap(True)
+            self.parameters_form.addRow(QLabel(str(parameter)), value_label)
 
 class AllocationQuerryOptions(Enum):
     DAILY = "IncludeDailyMeasured"
@@ -149,21 +243,20 @@ if __name__ == "__main__":
     res = session.read_configuration()
     session.close()
 
-    session = get_session(
-        host='localhost',
-        user='vajnar',
-        password='AldebaraN7#',
-        database='pp_offtake'
-    )
-    res = [p for p in res.get("OfftakePoints", []) if p.get("CityGateCode") in [CityGate.ELB.value, CityGate.ZIR.value]]
-    for payload in res:
-        point = OfftakePoint.from_payload_dict(payload)
-        print(f"Adding OfftakePoint: {point.offtake_point_code} - {point.name}")
-        session.add(point)
-        session.commit()
-    session.close()
+    res = res.get("OfftakePoints", [])
+    # for payload in res:
+    #     point = OfftakePoint.from_payload_dict(payload)
+    #     print(f"Adding OfftakePoint: {point.offtake_point_code} - {point.name}")
+    #     session.add(point)
+    #     session.commit()
+    # session.close()
 
     # session = PPSession(f'{baseUrl}/v1/PpWs/AddOfftakePointsEis', cert_path)
     # res = session.add_configuration(sample_payload)
     # session.close()
     # print(res)
+
+    app = QApplication(sys.argv)
+    window = MainWindow(res)
+    window.show()
+    sys.exit(app.exec())

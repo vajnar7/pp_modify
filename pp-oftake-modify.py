@@ -145,6 +145,10 @@ class MainWindow(QMainWindow):
         list_panel = QWidget()
         list_layout = QVBoxLayout(list_panel)
         list_layout.addWidget(QLabel("Offtake points"))
+        self.point_search = QLineEdit()
+        self.point_search.setPlaceholderText('Search offtake points')
+        self.point_search.textChanged.connect(self.filter_offtake_points)
+        list_layout.addWidget(self.point_search)
         list_layout.addWidget(self.point_list)
 
         self.selected_point_label = QLabel("Select an offtake point")
@@ -195,6 +199,10 @@ class MainWindow(QMainWindow):
     def show_point(self, current, previous):
         del previous
         if current is None:
+            self.selected_point_label.setText("No matching offtake points")
+            while self.parameters_form.rowCount():
+                self.parameters_form.removeRow(0)
+            self.parameter_editors.clear()
             return
 
         point = current.data(Qt.ItemDataRole.UserRole)
@@ -222,6 +230,29 @@ class MainWindow(QMainWindow):
 
             self.parameter_editors[parameter] = editor
             self.parameters_form.addRow(QLabel(parameter), editor)
+
+    def filter_offtake_points(self, search_text):
+        search_text = search_text.strip().casefold()
+        current_item = self.point_list.currentItem()
+
+        for index in range(self.point_list.count()):
+            item = self.point_list.item(index)
+            point = item.data(Qt.ItemDataRole.UserRole)
+            searchable_text = ' '.join((
+                str(point.get('OfftakePointCode') or ''),
+                str(point.get('Name') or ''),
+            )).casefold()
+            item.setHidden(search_text not in searchable_text)
+
+        if current_item is not None and current_item.isHidden():
+            self.point_list.setCurrentItem(None)
+
+        if self.point_list.currentItem() is None:
+            for index in range(self.point_list.count()):
+                item = self.point_list.item(index)
+                if not item.isHidden():
+                    self.point_list.setCurrentItem(item)
+                    break
 
     def save_selected_point(self):
         current_item = self.point_list.currentItem()

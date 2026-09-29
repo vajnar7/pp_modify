@@ -1,3 +1,4 @@
+import os
 import configparser
 import json
 from datetime import datetime, timedelta
@@ -22,6 +23,13 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from PySide6.QtCore import Qt
+from model import OfftakePoint, get_session
+
+# Configuration
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_USER = os.getenv('DB_USER', 'vajnar')
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'AldebaraN7#')
+DB_NAME = os.getenv('DB_NAME', 'pp_offtake')
 
 # To dobimo iz plinovodov konfiguracijo odjemnega mesta. Mi bomo morali to spremeniti in poslati nazaj.
 sample_payload =  {
@@ -235,21 +243,39 @@ if __name__ == "__main__":
             config['CERT']['key_file']
         )
 
-    # session = PPSession(f'{baseUrl}/v1/PpWs/GetOfftakePointsAllocations', cert_path)
-    # res = session.read(AllocationQuerryOptions.NOT_DAILY_FOR, CityGate.ELB)
-    # session.close()
-
     session = PPSession(f'{baseUrl}/v1/PpWs/GetOfftakePointsConfigurationEis', cert_path)
     res = session.read_configuration()
     session.close()
 
     res = res.get("OfftakePoints", [])
-    # for payload in res:
-    #     point = OfftakePoint.from_payload_dict(payload)
-    #     print(f"Adding OfftakePoint: {point.offtake_point_code} - {point.name}")
-    #     session.add(point)
-    #     session.commit()
-    # session.close()
+    res = [point for point in res if point.get("CityGateCode") in [CityGate.ZIR.value, CityGate.ELB.value]]
+    if res:
+        db_session = get_session(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
+        try:
+            point_codes = [point['OfftakePointCode'] for point in res]
+            existing_points = {
+                point.offtake_point_code: point
+                for point in db_session.query(OfftakePoint)
+                .filter(OfftakePoint.offtake_point_code.in_(point_codes))
+                .all()
+            }
+
+            for payload in res:
+                point_code = payload['OfftakePointCode']
+                point = existing_points.get(point_code)
+                if point is None:
+                    point = OfftakePoint.from_payload_dict(payload)
+                    db_session.add(point)
+                    existing_points[point_code] = point
+                else:
+                    point.update_from_payload(payload)
+
+            db_session.commit()
+        except Exception:
+            db_session.rollback()
+            raise
+        finally:
+            db_session.close()
 
     # session = PPSession(f'{baseUrl}/v1/PpWs/AddOfftakePointsEis', cert_path)
     # res = session.add_configuration(sample_payload)

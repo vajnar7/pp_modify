@@ -113,7 +113,6 @@ class MainWindow(QMainWindow):
         'YearlyOfftake',
         'OfftakeKind',
         'CurrentOfftakePointStatus',
-        'Cdk',
     }
     FLOAT_PARAMETERS = {
         'MeasurementDeviceMultiplier',
@@ -131,6 +130,7 @@ class MainWindow(QMainWindow):
         'Cdk',
     }
 
+    # TODO: pohendli errorje pri submit, cdk zakaj ne vpise??, 
     def __init__(self, offtake_points):
         super().__init__()
 
@@ -149,6 +149,12 @@ class MainWindow(QMainWindow):
         self.point_search.setPlaceholderText('Search offtake points')
         self.point_search.textChanged.connect(self.filter_offtake_points)
         list_layout.addWidget(self.point_search)
+        self.reload_button = QPushButton('Reload')
+        self.reload_button.clicked.connect(self.reload_offtake_points_api)
+        self.reload_button_db = QPushButton('Reload from DB')
+        self.reload_button_db.clicked.connect(self.reload_offtake_points)
+        list_layout.addWidget(self.reload_button)
+        list_layout.addWidget(self.reload_button_db)
         list_layout.addWidget(self.point_list)
 
         self.selected_point_label = QLabel("Select an offtake point")
@@ -173,6 +179,9 @@ class MainWindow(QMainWindow):
         self.ok_button = QPushButton('OK')
         self.ok_button.clicked.connect(self.save_selected_point)
         button_layout.addWidget(self.ok_button)
+        self.submit_button = QPushButton('Submit')
+        self.submit_button.clicked.connect(self.submit_selected_point)
+        button_layout.addWidget(self.submit_button)
         details_layout.addLayout(button_layout)
 
         splitter = QSplitter(Qt.Orientation.Horizontal)
@@ -185,6 +194,11 @@ class MainWindow(QMainWindow):
         container_layout.addWidget(splitter)
         self.setCentralWidget(container)
 
+        self.populate_offtake_points(self.offtake_points)
+
+    def populate_offtake_points(self, offtake_points):
+        self.offtake_points = offtake_points
+        self.point_list.clear()
         for point in self.offtake_points:
             code = point.get("OfftakePointCode") or point.get("Name") or "Unknown"
             item = QListWidgetItem(str(code))
@@ -193,8 +207,35 @@ class MainWindow(QMainWindow):
 
         if self.point_list.count():
             self.point_list.setCurrentRow(0)
+            self.filter_offtake_points(self.point_search.text())
         else:
             self.selected_point_label.setText("No offtake points found")
+
+    def reload_offtake_points(self):
+        db_session = get_session(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
+        try:
+            points = db_session.query(OfftakePoint).order_by(OfftakePoint.offtake_point_code).all()
+            offtake_points = []
+            for point in points:
+                payload = point.to_payload_dict()
+                payload['Name'] = point.name
+                offtake_points.append(payload)
+        except Exception as error:
+            QMessageBox.critical(self, 'Database reload failed', str(error))
+            return
+        finally:
+            db_session.close()
+
+        self.populate_offtake_points(offtake_points)
+
+    def reload_offtake_points_api(self):
+        session = PPSession(f'{baseUrl}/v1/PpWs/GetOfftakePointsConfigurationEis', cert_path)
+        res = session.read_configuration()
+        session.close()
+    
+        res = res.get("OfftakePoints", [])
+        res = [point for point in res if point.get("CityGateCode") in [CityGate.ZIR.value, CityGate.ELB.value]]
+        self.populate_offtake_points(res)
 
     def show_point(self, current, previous):
         del previous
@@ -253,6 +294,44 @@ class MainWindow(QMainWindow):
                 if not item.isHidden():
                     self.point_list.setCurrentItem(item)
                     break
+
+    def make_payload_from_editors(self):
+        payload = {}
+        for parameter, editor in self.parameter_editors.items():
+            if parameter in self.BOOLEAN_PARAMETERS:
+                value = editor.isChecked()
+            elif parameter == 'ConsumptionGroups':
+                raw_value = editor.toPlainText().strip()
+                value = json.loads(raw_value) if raw_value else []
+                if not isinstance(value, list):
+                    raise ValueError('ConsumptionGroups must be a JSON list.')
+            else:
+                raw_value = editor.text().strip()
+                if not raw_value and parameter in self.OPTIONAL_PARAMETERS:
+                    value = None
+                elif parameter in self.INTEGER_PARAMETERS:
+                    value = int(raw_value)
+                elif parameter in self.FLOAT_PARAMETERS:
+                    value = float(raw_value)
+                elif parameter == 'ValidFrom':
+                    value = datetime.fromisoformat(raw_value.replace('Z', '+00:00')).isoformat() if raw_value else None
+                else:
+                    value = raw_value
+            payload[parameter] = value
+
+        if not payload['Name'] or not payload['OfftakePointCode'] or not payload['CityGateCode']:
+            raise ValueError('Name, OfftakePointCode, and CityGateCode are required.')
+
+        return payload
+
+    def submit_selected_point(self):
+        payload = self.make_payload_from_editors()
+        print("Payload to be sent to the API:", json.dumps(payload, indent=2, ensure_ascii=False))
+
+        session = PPSession(f'{baseUrl}/v1/PpWs/ModifyOfftakePointsEis', cert_path)
+        res = session.update_configuration([payload])
+        session.close()
+        print("Response from API:", json.dumps(res, indent=2, ensure_ascii=False))
 
     def save_selected_point(self):
         current_item = self.point_list.currentItem()
@@ -356,7 +435,7 @@ class PPSession(Session):
             if allocation.get("CityGateCode") == citygate.value
         ]
 
-    def read_configuration(self, citygate: CityGate = CityGate.ZIR):
+    def read_configuration(self):
         payload = {
             "all": True,
         }
@@ -366,11 +445,6 @@ class PPSession(Session):
             raise Exception(f"Request failed with status code {response.status_code}: {response.text}")
         offTakePoints = response.json().get("OffTakePoints", [])
         return response.json()
-        # return [
-        #     allocation
-        #     for allocation in offTakePoints
-        #     if allocation.get("CityGateCode") == citygate.value
-        # ]
 
     def add_configuration(self, payload):
         payload = {"OffTakePoints": [payload]}
@@ -379,6 +453,12 @@ class PPSession(Session):
             raise Exception(f"Request failed with status code {response.status_code}: {response.text}")
         return response.json()
 
+    def update_configuration(self, payload):
+        payload = {"offtakePoints": payload}
+        response = self.post(self.url, json=payload, headers=headers, cert=self.cert_path)
+        if response.status_code != 200:
+            raise Exception(f"Request failed with status code {response.status_code}: {response.text}")
+        return response.json()
          
 
 

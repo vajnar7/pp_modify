@@ -97,12 +97,14 @@ class OfftakePoint(Base):
     # syncing existing database rows
     # patching/refreshing previously saved records
     def update_from_payload(self, payload):
-        valid_from = payload.get('ValidFrom')
-        if isinstance(valid_from, str):
-            try:
-                valid_from = datetime.fromisoformat(valid_from.replace('Z', '+00:00'))
-            except ValueError:
-                valid_from = None
+        if 'ValidFrom' in payload:
+            valid_from = payload.get('ValidFrom')
+            if isinstance(valid_from, str):
+                try:
+                    valid_from = datetime.fromisoformat(valid_from.replace('Z', '+00:00'))
+                except ValueError:
+                    valid_from = None
+            self.valid_from = valid_from
 
         self.name = payload.get('Name') or payload.get('OfftakePointCode') or self.name or 'Unknown'
         self.is_active = bool(payload.get('IsActive', self.is_active))
@@ -113,7 +115,6 @@ class OfftakePoint(Base):
         self.supplier_code = payload.get('SupplierCode', self.supplier_code)
         self.measurement_device_multiplier = payload.get('MeasurementDeviceMultiplier', self.measurement_device_multiplier)
         self.yearly_offtake = payload.get('YearlyOfftake', self.yearly_offtake)
-        self.valid_from = valid_from if valid_from is not None else self.valid_from
         self.is_protected_consumer = bool(payload.get('IsProtectedConsumer', self.is_protected_consumer))
         self.offtake_kind = payload.get('OfftakeKind', self.offtake_kind)
         self.interruptible_supply_contract = bool(payload.get('InterruptibleSupplyContract', self.interruptible_supply_contract))

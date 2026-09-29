@@ -12,11 +12,17 @@ from requests import Session
 import sys
 from PySide6.QtWidgets import (
     QApplication,
+    QCheckBox,
     QFormLayout,
+    QHBoxLayout,
     QLabel,
+    QLineEdit,
     QListWidget,
     QListWidgetItem,
     QMainWindow,
+    QMessageBox,
+    QPlainTextEdit,
+    QPushButton,
     QScrollArea,
     QSplitter,
     QVBoxLayout,
@@ -74,6 +80,57 @@ headers = {
     }
 
 class MainWindow(QMainWindow):
+    EDITABLE_PARAMETERS = (
+        'Name',
+        'IsActive',
+        'OfftakePointCode',
+        'CityGateCode',
+        'Status',
+        'LoadType',
+        'SupplierCode',
+        'MeasurementDeviceMultiplier',
+        'YearlyOfftake',
+        'ValidFrom',
+        'IsProtectedConsumer',
+        'OfftakeKind',
+        'InterruptibleSupplyContract',
+        'AlternativeEnergySource',
+        'ProtectedUserConsumePart',
+        'CurrentOfftakePointStatus',
+        'Gs1',
+        'Cdk',
+        'ConsumptionGroups',
+    )
+    BOOLEAN_PARAMETERS = {
+        'IsActive',
+        'IsProtectedConsumer',
+        'InterruptibleSupplyContract',
+        'AlternativeEnergySource',
+    }
+    INTEGER_PARAMETERS = {
+        'Status',
+        'LoadType',
+        'YearlyOfftake',
+        'OfftakeKind',
+        'CurrentOfftakePointStatus',
+        'Cdk',
+    }
+    FLOAT_PARAMETERS = {
+        'MeasurementDeviceMultiplier',
+        'ProtectedUserConsumePart',
+    }
+    OPTIONAL_PARAMETERS = {
+        'SupplierCode',
+        'YearlyOfftake',
+        'ValidFrom',
+        'OfftakeKind',
+        'MeasurementDeviceMultiplier',
+        'ProtectedUserConsumePart',
+        'CurrentOfftakePointStatus',
+        'Gs1',
+        'Cdk',
+    }
+
     def __init__(self, offtake_points):
         super().__init__()
 
@@ -95,6 +152,7 @@ class MainWindow(QMainWindow):
 
         self.parameters_form = QFormLayout()
         self.parameters_form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
+        self.parameter_editors = {}
         parameters_widget = QWidget()
         parameters_widget.setLayout(self.parameters_form)
 
@@ -106,6 +164,12 @@ class MainWindow(QMainWindow):
         details_layout = QVBoxLayout(details_panel)
         details_layout.addWidget(self.selected_point_label)
         details_layout.addWidget(parameters_scroll)
+        button_layout = QHBoxLayout()
+        button_layout.addStretch()
+        self.ok_button = QPushButton('OK')
+        self.ok_button.clicked.connect(self.save_selected_point)
+        button_layout.addWidget(self.ok_button)
+        details_layout.addLayout(button_layout)
 
         splitter = QSplitter(Qt.Orientation.Horizontal)
         splitter.addWidget(list_panel)
@@ -139,19 +203,78 @@ class MainWindow(QMainWindow):
 
         while self.parameters_form.rowCount():
             self.parameters_form.removeRow(0)
+        self.parameter_editors.clear()
 
-        for parameter, value in point.items():
-            if isinstance(value, (dict, list)):
-                value = json.dumps(value, indent=2, ensure_ascii=False)
-            elif value is None:
-                value = ""
+        for parameter in self.EDITABLE_PARAMETERS:
+            value = point.get(parameter)
+            if parameter == 'Name':
+                value = point.get('Name') or point.get('OfftakePointCode') or 'Unknown'
+
+            if parameter in self.BOOLEAN_PARAMETERS:
+                editor = QCheckBox()
+                editor.setChecked(bool(value))
+            elif parameter == 'ConsumptionGroups':
+                editor = QPlainTextEdit()
+                editor.setPlainText(json.dumps(value or [], indent=2, ensure_ascii=False))
+                editor.setMaximumHeight(150)
             else:
-                value = str(value)
+                editor = QLineEdit('' if value is None else str(value))
 
-            value_label = QLabel(value)
-            value_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-            value_label.setWordWrap(True)
-            self.parameters_form.addRow(QLabel(str(parameter)), value_label)
+            self.parameter_editors[parameter] = editor
+            self.parameters_form.addRow(QLabel(parameter), editor)
+
+    def save_selected_point(self):
+        current_item = self.point_list.currentItem()
+        if current_item is None:
+            return
+
+        selected_point = current_item.data(Qt.ItemDataRole.UserRole)
+        old_code = selected_point.get('OfftakePointCode')
+        payload = {}
+        try:
+            for parameter, editor in self.parameter_editors.items():
+                if parameter in self.BOOLEAN_PARAMETERS:
+                    value = editor.isChecked()
+                elif parameter == 'ConsumptionGroups':
+                    raw_value = editor.toPlainText().strip()
+                    value = json.loads(raw_value) if raw_value else []
+                    if not isinstance(value, list):
+                        raise ValueError('ConsumptionGroups must be a JSON list.')
+                else:
+                    raw_value = editor.text().strip()
+                    if not raw_value and parameter in self.OPTIONAL_PARAMETERS:
+                        value = None
+                    elif parameter in self.INTEGER_PARAMETERS:
+                        value = int(raw_value)
+                    elif parameter in self.FLOAT_PARAMETERS:
+                        value = float(raw_value)
+                    elif parameter == 'ValidFrom':
+                        value = datetime.fromisoformat(raw_value.replace('Z', '+00:00')).isoformat() if raw_value else None
+                    else:
+                        value = raw_value
+                payload[parameter] = value
+
+            if not payload['Name'] or not payload['OfftakePointCode'] or not payload['CityGateCode']:
+                raise ValueError('Name, OfftakePointCode, and CityGateCode are required.')
+        except (ValueError, json.JSONDecodeError) as error:
+            QMessageBox.warning(self, 'Invalid parameters', str(error))
+            return
+
+        db_session = get_session(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
+        try:
+            point = db_session.query(OfftakePoint).filter_by(offtake_point_code=old_code).one()
+            point.update_from_payload(payload)
+            db_session.commit()
+        except Exception as error:
+            db_session.rollback()
+            QMessageBox.critical(self, 'Database update failed', str(error))
+            return
+        finally:
+            db_session.close()
+
+        selected_point.update(payload)
+        current_item.setText(payload['OfftakePointCode'])
+        QMessageBox.information(self, 'Saved', 'Offtake point updated in the database.')
 
 class AllocationQuerryOptions(Enum):
     DAILY = "IncludeDailyMeasured"
@@ -269,6 +392,9 @@ if __name__ == "__main__":
                     existing_points[point_code] = point
                 else:
                     point.update_from_payload(payload)
+
+                payload.update(point.to_payload_dict())
+                payload['Name'] = point.name
 
             db_session.commit()
         except Exception:

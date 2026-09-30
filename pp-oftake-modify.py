@@ -113,6 +113,7 @@ class MainWindow(QMainWindow):
         'YearlyOfftake',
         'OfftakeKind',
         'CurrentOfftakePointStatus',
+        'Cdk',
     }
     FLOAT_PARAMETERS = {
         'MeasurementDeviceMultiplier',

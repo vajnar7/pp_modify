@@ -17,6 +17,7 @@ def get_engine(host, user, password, database):
         pool_recycle=1800,
         pool_size=5,
         max_overflow=10,
+        connect_args={'use_pure': True},
     )
 
 @lru_cache(maxsize=32)

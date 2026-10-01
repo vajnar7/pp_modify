@@ -13,6 +13,7 @@ import sys
 from PySide6.QtWidgets import (
     QApplication,
     QCheckBox,
+    QComboBox,
     QFormLayout,
     QHBoxLayout,
     QLabel,
@@ -32,7 +33,7 @@ from PySide6.QtCore import Qt
 from model import OfftakePoint, get_session
 
 # Configuration
-DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_HOST = os.getenv('DB_HOST', '192.168.7.73')
 DB_USER = os.getenv('DB_USER', 'vajnar')
 DB_PASSWORD = os.getenv('DB_PASSWORD', 'AldebaraN7#')
 DB_NAME = os.getenv('DB_NAME', 'pp_offtake')
@@ -78,6 +79,134 @@ headers = {
         "Connection": "keep-alive",
         "User-Agent": "PostmanRuntime/7.44.1"
     }
+
+class OfftakePointStatus(Enum):
+    NO_OFFTAKE = (1, 'NoOfftake')
+    NOT_DAILY_MEASURED = (2, 'NotDailyMeasured')
+    DAILY_MEASURED = (3, 'DailyMeasured')
+
+    @property
+    def code(self):
+        return self.value[0]
+
+    @property
+    def label(self):
+        return self.value[1]
+
+    @classmethod
+    def from_value(cls, value):
+        for status in cls:
+            if value == status.code or value == str(status.code) or value == status.label:
+                return status
+        return cls.NO_OFFTAKE
+
+class OfftakePointLoadType(Enum):
+    COOKING = (1, 'Cooking')
+    HOT_WATER = (2, 'HotWater')
+    HEATING_SINGLE_HOME = (3, 'HeatingSingleHome')
+    HEATING_APPARTMENT_BLOCK = (4, 'HeatingAppartmentBlock')
+    COMMERCIAL = (5, 'Commercial')
+    TECHNICAL = (6, 'Technical')
+    HEATING_WITHOUT_COOKING_AND_HOT_WATER = (7, 'HeatingWithoutCookingAndHotWater')
+    UNKNOWN = (8, 'Unknown')
+
+    @property
+    def code(self):
+        return self.value[0]
+
+    @property
+    def label(self):
+        return self.value[1]
+
+    @classmethod
+    def from_value(cls, value):
+        for load_type in cls:
+            if value == load_type.code or value == str(load_type.code) or value == load_type.label:
+                return load_type
+        return cls.UNKNOWN
+
+class OfftakeKind(Enum):
+    NONE = (None, 'None')
+    HOUSEHOLD_INDIVIDUAL = (1, 'HouseholdIndividual')
+    HOUSEHOLD_COMMON = (2, 'HouseholdCommon')
+    SOCIAL_SERVICE_TYPE_3 = (3, 'SocialServiceType3')
+    SOCIAL_SERVICE_TYPE_4 = (4, 'SocialServiceType4')
+    SOCIAL_SERVICE_TYPE_5 = (5, 'SocialServiceType5')
+    SOCIAL_SERVICE_TYPE_6 = (6, 'SocialServiceType6')
+    SOCIAL_SERVICE_TYPE_7 = (7, 'SocialServiceType7')
+    KINDERGARTEN_SCHOOL = (8, 'KindergartenSchool')
+    HEAT_DISTRIBUTION = (9, 'HeatDistribution')
+    BUSINESS_CONSUMPTION = (10, 'BusinessConsumption')
+    INDUSTRY_CONSUMPTION = (11, 'IndustryConsumption')
+    POWER_PLANT = (12, 'PowerPlant')
+
+    @property
+    def code(self):
+        return self.value[0]
+
+    @property
+    def label(self):
+        return self.value[1]
+
+    @classmethod
+    def from_value(cls, value):
+        for offtake_kind in cls:
+            if value == offtake_kind.code or value == str(offtake_kind.code) or value == offtake_kind.label:
+                return offtake_kind
+        return cls.NONE
+
+class CurrentOfftakePointStatus(Enum):
+    NONE = (0, 'None')
+    CALL_UNCONFIRMED = (1, 'CallUnconfirmed')
+    CALL_CONFIRMED = (2, 'CallConfirmed')
+    DISCONNECTED = (3, 'Disconnected')
+
+    @property
+    def code(self):
+        return self.value[0]
+
+    @property
+    def label(self):
+        return self.value[1]
+
+    @classmethod
+    def from_value(cls, value):
+        for status in cls:
+            if value == status.code or value == str(status.code) or value == status.label:
+                return status
+        return cls.NONE
+
+class OfftakePointCdk(Enum):
+    CDK_1 = (1, 'Cdk1')
+    CDK_2 = (2, 'Cdk2')
+    CDK_3 = (3, 'Cdk3')
+    CDK_4 = (4, 'Cdk4')
+    CDK_5 = (5, 'Cdk5')
+    CDK_6 = (6, 'Cdk6')
+    CDK_7 = (7, 'Cdk7')
+    CDK_8 = (8, 'Cdk8')
+    CDK_9 = (9, 'Cdk9')
+    CDK_10 = (10, 'Cdk10')
+    CDK_11 = (11, 'Cdk11')
+    CDK_12 = (12, 'Cdk12')
+    CDK_13 = (13, 'Cdk13')
+    CDK_14 = (14, 'Cdk14')
+    CDK_15 = (15, 'Cdk15')
+
+    @property
+    def code(self):
+        return self.value[0]
+
+    @property
+    def label(self):
+        return self.value[1]
+
+    @classmethod
+    def from_value(cls, value):
+        for cdk in cls:
+            if value == cdk.code or value == str(cdk.code) or value == cdk.label:
+                return cdk
+        return cls.CDK_1
 
 class MainWindow(QMainWindow):
     EDITABLE_PARAMETERS = (
@@ -263,6 +392,41 @@ class MainWindow(QMainWindow):
             if parameter in self.BOOLEAN_PARAMETERS:
                 editor = QCheckBox()
                 editor.setChecked(bool(value))
+            elif parameter == 'Status':
+                editor = QComboBox()
+                for status in OfftakePointStatus:
+                    editor.addItem(f'{status.code} = {status.label}', status.code)
+                selected_status = OfftakePointStatus.from_value(value)
+                editor.setCurrentIndex(editor.findData(selected_status.code))
+            elif parameter == 'LoadType':
+                editor = QComboBox()
+                for load_type in OfftakePointLoadType:
+                    editor.addItem(f'{load_type.code} = {load_type.label}', load_type.code)
+                selected_load_type = OfftakePointLoadType.from_value(value)
+                editor.setCurrentIndex(editor.findData(selected_load_type.code))
+            elif parameter == 'OfftakeKind':
+                editor = QComboBox()
+                for offtake_kind in OfftakeKind:
+                    label = (
+                        offtake_kind.label
+                        if offtake_kind.code is None
+                        else f'{offtake_kind.code} = {offtake_kind.label}'
+                    )
+                    editor.addItem(label, offtake_kind.code)
+                selected_offtake_kind = OfftakeKind.from_value(value)
+                editor.setCurrentIndex(editor.findData(selected_offtake_kind.code))
+            elif parameter == 'CurrentOfftakePointStatus':
+                editor = QComboBox()
+                for status in CurrentOfftakePointStatus:
+                    editor.addItem(f'{status.code} = {status.label}', status.code)
+                selected_status = CurrentOfftakePointStatus.from_value(value)
+                editor.setCurrentIndex(editor.findData(selected_status.code))
+            elif parameter == 'Cdk':
+                editor = QComboBox()
+                for cdk in OfftakePointCdk:
+                    editor.addItem(f'{cdk.code} = {cdk.label}', cdk.code)
+                selected_cdk = OfftakePointCdk.from_value(value)
+                editor.setCurrentIndex(editor.findData(selected_cdk.code))
             elif parameter == 'ConsumptionGroups':
                 editor = QPlainTextEdit()
                 editor.setPlainText(json.dumps(value or [], indent=2, ensure_ascii=False))
@@ -301,6 +465,20 @@ class MainWindow(QMainWindow):
         for parameter, editor in self.parameter_editors.items():
             if parameter in self.BOOLEAN_PARAMETERS:
                 value = editor.isChecked()
+            elif parameter == 'Status':
+                value = editor.currentData()
+                if value is None:
+                    raise ValueError('Status must be a valid OfftakePointStatus.')
+            elif parameter == 'LoadType':
+                value = editor.currentData()
+                if value is None:
+                    raise ValueError('LoadType must be a valid OfftakePointLoadType.')
+            elif parameter == 'OfftakeKind':
+                value = editor.currentData()
+            elif parameter == 'CurrentOfftakePointStatus':
+                value = editor.currentData()
+            elif parameter == 'Cdk':
+                value = editor.currentData()
             elif parameter == 'ConsumptionGroups':
                 raw_value = editor.toPlainText().strip()
                 value = json.loads(raw_value) if raw_value else []
@@ -346,6 +524,20 @@ class MainWindow(QMainWindow):
             for parameter, editor in self.parameter_editors.items():
                 if parameter in self.BOOLEAN_PARAMETERS:
                     value = editor.isChecked()
+                elif parameter == 'Status':
+                    value = editor.currentData()
+                    if value is None:
+                        raise ValueError('Status must be a valid OfftakePointStatus.')
+                elif parameter == 'LoadType':
+                    value = editor.currentData()
+                    if value is None:
+                        raise ValueError('LoadType must be a valid OfftakePointLoadType.')
+                elif parameter == 'OfftakeKind':
+                    value = editor.currentData()
+                elif parameter == 'CurrentOfftakePointStatus':
+                    value = editor.currentData()
+                elif parameter == 'Cdk':
+                    value = editor.currentData()
                 elif parameter == 'ConsumptionGroups':
                     raw_value = editor.toPlainText().strip()
                     value = json.loads(raw_value) if raw_value else []
